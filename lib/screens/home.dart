@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -58,19 +59,37 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: FutureBuilder<Product>(
               future: getProductApi(),
-              builder: (context, AsyncSnapshot<Product> snapshot) {
+              builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ListView.builder(
+                  return GridView.builder(
                     itemCount: snapshot.data!.products.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          Image.network(
-                              snapshot.data!.products[index].thumbnail)
+                          Card(
+                            elevation: 5,
+                            child: ClipRRect(
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    snapshot.data!.products[index].thumbnail,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
+                            ),
+                          )
                         ],
                       );
                     },
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
                   );
+                } else if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
                 } else {
                   return const Center(
                     child: CircularProgressIndicator(),
