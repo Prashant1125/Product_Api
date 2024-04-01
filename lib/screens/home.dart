@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:product_api/models/product_model.dart';
+import 'package:product_api/screens/detail.dart';
+import '../api/api.dart';
+import '../style/textstyle.dart';
 
 late Size mq;
 
@@ -15,17 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<Product> getProductApi() async {
-    final response =
-        await http.get(Uri.parse('https://dummyjson.com/products'));
-    var data = jsonDecode(response.body.toString());
-    if (response.statusCode == 200) {
-      return Product.fromJson(data);
-    } else {
-      return Product.fromJson(data);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     mq = MediaQuery.sizeOf(context);
@@ -64,29 +54,109 @@ class _HomePageState extends State<HomePage> {
                   return GridView.builder(
                     itemCount: snapshot.data!.products.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Card(
-                            elevation: 5,
-                            child: ClipRRect(
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    snapshot.data!.products[index].thumbnail,
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) =>
-                                        CircularProgressIndicator(
-                                            value: downloadProgress.progress),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
+                      var product = snapshot.data!.products[index];
+
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetail(product),
+                              ));
+                        },
+                        child: Column(
+                          children: [
+                            Card(
+                              elevation: 10,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: CachedNetworkImage(
+                                        imageUrl: product.thumbnail,
+                                        fit: BoxFit.cover,
+                                        height: 175,
+                                        width: mq.width * 0.8,
+                                        progressIndicatorBuilder:
+                                            (context, url, downloadProgress) =>
+                                                Center(
+                                          child: CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ' ₹ ${product.price}',
+                                              style: pricestyle,
+                                            ),
+                                            Text(
+                                              product.title,
+                                              style: titlestyle,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          children: [
+                                            RatingBar.builder(
+                                              itemSize: 20,
+                                              initialRating: product.rating!,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: true,
+                                              itemCount: 5,
+                                              itemPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 1.0),
+                                              itemBuilder: (context, _) =>
+                                                  const Icon(Icons.star,
+                                                      color: Color.fromARGB(
+                                                          255, 0, 63, 2)),
+                                              onRatingUpdate: (rating) {},
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              product.category,
+                                              style: titlestyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       );
                     },
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
+                            crossAxisCount: 1,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: 1.5),
                   );
                 } else if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
