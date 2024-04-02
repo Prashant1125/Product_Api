@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: FutureBuilder<Product>(
               future: getProductApi(),
-              builder: (context, snapshot) {
+              builder: (context, AsyncSnapshot<Product> snapshot) {
                 if (snapshot.hasData) {
                   return GridView.builder(
                     itemCount: snapshot.data!.products.length,
@@ -102,10 +102,23 @@ class _HomePageState extends State<HomePage> {
                                         Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              ' ₹ ${product.price}',
-                                              style: pricestyle,
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  ' ₹ ${product.price}00',
+                                                  style: pricestyle,
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  'Discount ${product.discountPercentage} %',
+                                                  style: discountstyle,
+                                                ),
+                                              ],
                                             ),
                                             Text(
                                               product.title,
