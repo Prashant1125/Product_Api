@@ -66,98 +66,87 @@ class _HomePageState extends State<HomePage> {
                         },
                         child: Column(
                           children: [
-                            Card(
-                              elevation: 10,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: CachedNetworkImage(
-                                        imageUrl: product.thumbnail,
-                                        fit: BoxFit.cover,
-                                        height: 175,
-                                        width: mq.width * 0.8,
-                                        progressIndicatorBuilder:
-                                            (context, url, downloadProgress) =>
-                                                Center(
-                                          child: CircularProgressIndicator(
-                                              value: downloadProgress.progress),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                color: const Color.fromARGB(255, 192, 247, 237),
+                                elevation: 10,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: CachedNetworkImage(
+                                          imageUrl: product.thumbnail,
+                                          fit: BoxFit.cover,
+                                          height: 150,
+                                          width: mq.width * 0.8,
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              Center(
+                                            child: CircularProgressIndicator(
+                                                value:
+                                                    downloadProgress.progress),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  ' ₹ ${product.price}00',
-                                                  style: pricestyle,
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  'Discount ${product.discountPercentage} %',
-                                                  style: discountstyle,
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              product.title,
-                                              style: titlestyle,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Column(
-                                          children: [
-                                            RatingBar.builder(
-                                              itemSize: 20,
-                                              initialRating: product.rating!,
-                                              direction: Axis.horizontal,
-                                              allowHalfRating: true,
-                                              itemCount: 5,
-                                              itemPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 1.0),
-                                              itemBuilder: (context, _) =>
-                                                  const Icon(Icons.star,
-                                                      color: Color.fromARGB(
-                                                          255, 0, 63, 2)),
-                                              onRatingUpdate: (rating) {},
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              product.category,
-                                              style: titlestyle,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                ' ₹ ${product.price}00',
+                                                style: pricestyle,
+                                              ),
+                                              SizedBox(
+                                                width: mq.width * .020,
+                                              ),
+                                              Text(
+                                                'Discount ${product.discountPercentage} %',
+                                                style: discountstyle,
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                product.title,
+                                                style: titlestyle.copyWith(
+                                                    fontSize: 10),
+                                              ),
+                                              RatingBar.builder(
+                                                itemSize: 20,
+                                                initialRating: product.rating!,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: true,
+                                                itemCount: 5,
+                                                itemPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 1.0),
+                                                itemBuilder: (context, _) =>
+                                                    const Icon(Icons.star,
+                                                        color: Color.fromARGB(
+                                                            255, 0, 63, 2)),
+                                                onRatingUpdate: (rating) {},
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             )
@@ -169,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 1,
                             mainAxisSpacing: 0,
-                            childAspectRatio: 1.5),
+                            childAspectRatio: 1.3),
                   );
                 } else if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
