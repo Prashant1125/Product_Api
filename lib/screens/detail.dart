@@ -64,9 +64,8 @@ class _ProductDetailState extends State<ProductDetail> {
             Text(
               widget.product.title,
               style: titlestyle.copyWith(
-                  fontWeight: FontWeight.w600,
                   fontSize: 20,
-                  fontFamily: 'Cursive',
+                  fontFamily: 'bold',
                   color: const Color.fromARGB(255, 109, 135, 184)),
             ),
             Text(
@@ -137,11 +136,11 @@ class _ProductDetailState extends State<ProductDetail> {
                 decoration: BoxDecoration(
                     color: Colors.green,
                     borderRadius: BorderRadius.circular(10)),
-                width: mq.width * .45,
-                height: 30,
+                width: mq.width * .75,
+                height: 45,
                 child: MaterialButton(
                   onPressed: () {},
-                  child: const Text('Add To Cart'),
+                  child: const Text('Buy Now'),
                 ),
               ),
             ),
@@ -149,14 +148,17 @@ class _ProductDetailState extends State<ProductDetail> {
               elevation: 10,
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: const Color.fromARGB(255, 255, 2, 2),
                     borderRadius: BorderRadius.circular(10)),
-                width: mq.width * .45,
-                height: 30,
-                child: MaterialButton(
-                  onPressed: () {},
-                  child: const Text('Buy Now'),
-                ),
+                width: mq.width * .15,
+                height: 45,
+                child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                      size: 30,
+                    )),
               ),
             ),
           ],

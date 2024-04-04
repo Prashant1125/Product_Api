@@ -122,9 +122,12 @@ class _HomePageState extends State<HomePage> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                product.title,
+                                                product.title.length > 20
+                                                    ? '${product.title.substring(0, 20)}...'
+                                                    : product.title,
                                                 style: titlestyle.copyWith(
-                                                    fontSize: 10),
+                                                  fontSize: 15,
+                                                ),
                                               ),
                                               RatingBar.builder(
                                                 itemSize: 20,
